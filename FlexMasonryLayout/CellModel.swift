@@ -50,13 +50,3 @@ class CellModel {
         }
     }
 }
-
-extension CellModel {
-    enum CellType: CaseIterable {
-        case small
-        case medium
-        case large
-        case extraLarge
-        case doubleExtraLarge
-    }
-}

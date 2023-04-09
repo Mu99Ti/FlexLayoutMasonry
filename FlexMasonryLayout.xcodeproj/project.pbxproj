@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B033C2F29E03F6F00F8088F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B033C2E29E03F6F00F8088F /* Extensions.swift */; };
 		7BFA42CB29DAC42E006C25D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFA42CA29DAC42E006C25D6 /* AppDelegate.swift */; };
 		7BFA42CF29DAC42E006C25D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFA42CE29DAC42E006C25D6 /* ViewController.swift */; };
 		7BFA42D429DAC430006C25D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BFA42D329DAC430006C25D6 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B033C2E29E03F6F00F8088F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7BFA42C729DAC42E006C25D6 /* FlexMasonryLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexMasonryLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BFA42CA29DAC42E006C25D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BFA42CE29DAC42E006C25D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			children = (
 				7BFA42CA29DAC42E006C25D6 /* AppDelegate.swift */,
 				7BFA42DE29DADB21006C25D6 /* Layout.swift */,
+				7B033C2E29E03F6F00F8088F /* Extensions.swift */,
 				7BFA42E829DB0083006C25D6 /* MasonryCollectionView.swift */,
 				7BFA42E029DAE5E1006C25D6 /* CellModel.swift */,
 				7BFA42CE29DAC42E006C25D6 /* ViewController.swift */,
@@ -145,6 +148,7 @@
 				7BFA42E129DAE5E1006C25D6 /* CellModel.swift in Sources */,
 				7BFA42E929DB0083006C25D6 /* MasonryCollectionView.swift in Sources */,
 				7BFA42E529DAF955006C25D6 /* Cell.swift in Sources */,
+				7B033C2F29E03F6F00F8088F /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
