@@ -10,6 +10,7 @@ import UIKit
 
 class MasonryLayout: UICollectionViewLayout {
     
+
     private var context = Context()
     private let spacing: CGFloat = 10
     private var layoutAttributes: [UICollectionViewLayoutAttributes] = []
@@ -18,6 +19,7 @@ class MasonryLayout: UICollectionViewLayout {
     private let lineSpacing: CGFloat = 0
     private var sumCellWidth: CGFloat = 0.0
     private let cellTypes = CellModel.CellType.allCases
+    private var cellRowsArray: [CGRect] = []
     private var contentWidth: CGFloat {
         guard let collectionView = collectionView else { return 0 }
         let insets = collectionView.contentInset
@@ -36,56 +38,53 @@ class MasonryLayout: UICollectionViewLayout {
         
         context.cursor.x = lineSpacing
         
-        for item in 0...10 {
+        for item in 0...numberOfItems {
             
-            let cellWidth = collectionView.frame.width / 5
-            let cellWidthFactor  = randomFrame().x * cellWidth
-            let cellHeightFactor = randomFrame().y * cellWidth
+            let cellWidthOrigin = collectionView.frame.width / 5
+            let cellWidth  = randomFrame().x * cellWidthOrigin
+            let cellHeight = randomFrame().y * cellWidthOrigin
             let indexPath = IndexPath(item: item, section: 0)
             let collectionViewWidth: CGFloat = collectionView.frame.width
-            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            let cellLayoutAttribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
 
             
             if item == 0 {
                 context.space = collectionViewWidth
-                statsPrinter(status: true, item: item, maxHeight: context.maxHeight, point: context.cursor, size: .init(width: cellWidthFactor, height: cellHeightFactor), space: context.space)
                 
-                let frame = createFrame(location: context.cursor, width: cellWidthFactor, height: cellHeightFactor)
-                attributes.frame = frame
-                layoutAttributes.append(attributes)
+                let frame = createFrame(location: context.cursor, width: cellWidth, height: cellHeight)
+                cellLayoutAttribute.frame = frame
+                cellRowsArray.append(frame)
+                layoutAttributes.append(cellLayoutAttribute)
                 context.cursor.x = frame.width + lineSpacing
-                context.maxHeight = cellHeightFactor
-                context.space = collectionViewWidth - cellWidthFactor + lineSpacing
                 
-                statsPrinter(status: false, item: item, maxHeight: context.maxHeight, point: context.cursor, size: .init(width: cellWidthFactor, height: cellHeightFactor), space: context.space)
+                context.maxHeight = cellHeight
+                context.space = collectionViewWidth - cellWidth - lineSpacing
+                
             } else {
-                if context.space >= cellWidthFactor {
-                    statsPrinter(status: true, item: item, maxHeight: context.maxHeight, point: context.cursor, size: .init(width: cellWidthFactor, height: cellHeightFactor), space: context.space)
+                
+                if context.space >= cellWidth {
                     
-                    let frame = createFrame(location: context.cursor, width: cellWidthFactor, height: cellHeightFactor)
-                    attributes.frame = frame
-                    layoutAttributes.append(attributes)
+                    let frame = createFrame(location: context.cursor, width: cellWidth, height: cellHeight)
+                    cellLayoutAttribute.frame = frame
+                    cellRowsArray.append(frame)
+                    layoutAttributes.append(cellLayoutAttribute)
                     context.cursor.x += frame.width
-                    context.maxHeight = cellHeightFactor
-                    context.space = context.space - frame.width + lineSpacing
-                    
-                    statsPrinter(status: false, item: item, maxHeight: context.maxHeight, point: context.cursor, size: .init(width: cellWidthFactor, height: cellHeightFactor), space: context.space)
+                    context.maxHeight = layoutAttributes.sorted(by: { $0.frame.maxY > $1.frame.maxY }).first?.frame.maxY ?? 0.0
+                    context.space = context.space - frame.width - lineSpacing
                 } else {
                     context.space = collectionViewWidth
-                    debugPrint("max height is: \(context.maxHeight) and y point is: \(context.cursor.y)")
-                    context.cursor.y = max(context.maxHeight, cellHeightFactor)
+                    context.cursor.y = context.maxHeight
                     context.cursor.x = 0
-                    debugPrint("max height is: \(context.maxHeight) and y point is: \(context.cursor.y)")
-                    statsPrinter(status: true, item: item, maxHeight: context.maxHeight, point: context.cursor, size: .init(width: cellWidthFactor, height: cellHeightFactor), space: context.space)
+
                     
-                    let frame = createFrame(location: context.cursor, width: cellWidthFactor, height: cellHeightFactor)
-                    attributes.frame = frame
-                    layoutAttributes.append(attributes)
-                    context.cursor.x += cellWidthFactor + lineSpacing
-                    context.maxHeight = cellHeightFactor
-                    context.space = context.space - frame.width + lineSpacing
-                    
-                    statsPrinter(status: false, item: item, maxHeight: context.maxHeight, point: context.cursor, size: .init(width: cellWidthFactor, height: cellHeightFactor), space: context.space)
+                    let frame = createFrame(location: context.cursor, width: cellWidth, height: cellHeight)
+                    cellLayoutAttribute.frame = frame
+                    cellRowsArray.append(frame)
+                    layoutAttributes.append(cellLayoutAttribute)
+                    context.cursor.x += cellWidth + lineSpacing
+                    context.maxHeight = cellHeight
+                    context.space = context.space - frame.width - lineSpacing
+                    context.maxHeight = layoutAttributes.sorted(by: { $0.frame.maxY > $1.frame.maxY }).first?.frame.maxY ?? 0.0
                 }
             }
         }
@@ -131,24 +130,6 @@ class MasonryLayout: UICollectionViewLayout {
     
     private func createFrame(location: CGPoint, width: CGFloat, height: CGFloat) -> CGRect {
         return .init(x: location.x, y: location.y, width: width, height: height)
-    }
-    
-    private func statsPrinter(status: Bool,item: Int, maxHeight: CGFloat, point: CGPoint, size: CGSize, space: CGFloat) {
-        if status {
-            debugPrint("item number: \(item) and white space is: \(space)")
-            debugPrint("item number: \(item) and cell width is: \(size.width)")
-            debugPrint("item number: \(item) and x point is: \(point.x)")
-            debugPrint("item number: \(item) and y point is: \(point.y)")
-            debugPrint("item number: \(item) and max height is: \(maxHeight)")
-            debugPrint("item number: \(item) and cell height is: \(size.height)")
-        } else {
-            debugPrint("item number: \(item) and after frame white space is: \(space)")
-            debugPrint("item number: \(item) and after frame cell width is: \(size.width)")
-            debugPrint("item number: \(item) and after frame x point is: \(point.x)")
-            debugPrint("item number: \(item) and after frame y point is: \(point.y)")
-            debugPrint("item number: \(item) and after frame max height is: \(maxHeight)")
-            debugPrint("item number: \(item) and after frame cell height is: \(size.height)")
-        }
     }
 }
 
